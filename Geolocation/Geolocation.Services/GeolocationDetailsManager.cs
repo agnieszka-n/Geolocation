@@ -12,10 +12,12 @@ namespace Geolocation.Services
     public class GeolocationDetailsManager : IGeolocationDetailsManager
     {
         private readonly GeolocationContext db;
+        private readonly ILogger logger;
 
-        public GeolocationDetailsManager(GeolocationContext context)
+        public GeolocationDetailsManager(GeolocationContext context, ILogger logger)
         {
             db = context;
+            this.logger = logger;
         }
 
         public GetGeolocationDetailsByIpReturnModel GetByIp(string ip)
@@ -27,7 +29,7 @@ namespace Geolocation.Services
             }
             catch (Exception ex)
             {
-                LogError(ex);
+                logger.LogError(this, ex);
                 throw;
             }
         }
@@ -41,7 +43,7 @@ namespace Geolocation.Services
             }
             catch (Exception ex)
             {
-                LogError(ex);
+                logger.LogError(this, ex);
                 throw;
             }
         }
@@ -65,7 +67,7 @@ namespace Geolocation.Services
             }
             catch (Exception ex)
             {
-                LogError(ex);
+                logger.LogError(this, ex);
                 throw;
             }
         }
@@ -89,7 +91,7 @@ namespace Geolocation.Services
             }
             catch (Exception ex)
             {
-                LogError(ex);
+                logger.LogError(this, ex);
                 throw;
             }
         }
@@ -97,11 +99,6 @@ namespace Geolocation.Services
         public void Dispose()
         {
             db.Dispose();
-        }
-
-        private void LogError(Exception ex)
-        {
-            System.Diagnostics.Trace.WriteLine(ex);
         }
     }
 }

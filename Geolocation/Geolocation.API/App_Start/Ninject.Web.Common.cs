@@ -69,6 +69,7 @@ namespace Geolocation.API.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Bind<GeolocationContext>().To<GeolocationContext>().InRequestScope();
+            kernel.Bind<ILogger>().To<Logger>().InRequestScope();
             kernel.Bind<IGeolocationDetailsManager>().To<GeolocationDetailsManager>().InRequestScope();
             kernel.Bind<ILocationValidator>().To<LocationValidator>().InRequestScope();
         }
