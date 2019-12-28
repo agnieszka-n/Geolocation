@@ -70,6 +70,7 @@ namespace Geolocation.API.App_Start
         {
             kernel.Bind<GeolocationContext>().To<GeolocationContext>().InRequestScope();
             kernel.Bind<IGeolocationDetailsManager>().To<GeolocationDetailsManager>().InRequestScope();
+            kernel.Bind<ILocationValidator>().To<LocationValidator>().InRequestScope();
         }
     }
 

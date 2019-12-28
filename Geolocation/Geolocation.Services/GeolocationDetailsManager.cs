@@ -17,14 +17,30 @@ namespace Geolocation.Services
             db = context;
         }
 
-        public GeolocationDetails Create(string ipOrUrl)
+        public GeolocationDetails CreateWithIp(string ip)
         {
             var newItem = new GeolocationDetails()
             {
-                IP = ipOrUrl,
-                City = $"city {ipOrUrl}",
-                CountryName = $"country {ipOrUrl}",
-                ZipCode = $"zip {ipOrUrl}",
+                IP = ip,
+                City = $"city {ip}",
+                CountryName = $"country {ip}",
+                ZipCode = $"zip {ip}",
+            };
+
+            db.GeolocationDetails.Add(newItem);
+            db.SaveChanges();
+
+            return newItem;
+        }
+
+        public GeolocationDetails CreateWithUrl(string url)
+        {
+            var newItem = new GeolocationDetails()
+            {
+                URL = url,
+                City = $"city {url}",
+                CountryName = $"country {url}",
+                ZipCode = $"zip {url}",
             };
 
             db.GeolocationDetails.Add(newItem);

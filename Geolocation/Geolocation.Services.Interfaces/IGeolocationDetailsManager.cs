@@ -9,6 +9,7 @@ namespace Geolocation.Services.Interfaces
 {
     public interface IGeolocationDetailsManager
     {
-        GeolocationDetails Create(string ipOrUrl);
+        GeolocationDetails CreateWithIp(string ip);
+        GeolocationDetails CreateWithUrl(string url);
     }
 }
