@@ -7,6 +7,7 @@ namespace Geolocation.API.App_Start
     using System.Web;
     using System.Web.Http;
     using System.Web.Http.Dependencies;
+    using Geolocation.Model;
     using Geolocation.Services;
     using Geolocation.Services.Interfaces;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
@@ -67,6 +68,7 @@ namespace Geolocation.API.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            kernel.Bind<GeolocationContext>().To<GeolocationContext>().InRequestScope();
             kernel.Bind<IGeolocationDetailsManager>().To<GeolocationDetailsManager>().InRequestScope();
         }
     }

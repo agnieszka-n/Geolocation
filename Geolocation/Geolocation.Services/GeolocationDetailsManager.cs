@@ -8,9 +8,14 @@ using System.Threading.Tasks;
 
 namespace Geolocation.Services
 {
-    public class GeolocationDetailsManager : IGeolocationDetailsManager, IDisposable
+    public class GeolocationDetailsManager : IGeolocationDetailsManager
     {
-        private GeolocationContext db = new GeolocationContext();
+        private readonly GeolocationContext db;
+
+        public GeolocationDetailsManager(GeolocationContext context)
+        {
+            db = context;
+        }
 
         public GeolocationDetails Create(string ipOrUrl)
         {
