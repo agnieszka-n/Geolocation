@@ -1,4 +1,5 @@
 ﻿using Geolocation.Model;
+using Geolocation.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,13 @@ namespace Geolocation.API.Controllers
     [RoutePrefix("api/geolocation")]
     public class GeolocationController : ApiController
     {
+        private readonly IGeolocationDetailsManager service;
         private GeolocationContext db = new GeolocationContext();
+
+        public GeolocationController(IGeolocationDetailsManager service)
+        {
+            this.service = service;
+        }
 
         [Route(""), HttpPost]
         public IHttpActionResult Post([FromBody] string ipOrUrl)
