@@ -13,7 +13,6 @@ namespace Geolocation.API.Controllers
     public class GeolocationController : ApiController
     {
         private readonly IGeolocationDetailsManager service;
-        private GeolocationContext db = new GeolocationContext();
 
         public GeolocationController(IGeolocationDetailsManager service)
         {
@@ -23,27 +22,8 @@ namespace Geolocation.API.Controllers
         [Route(""), HttpPost]
         public IHttpActionResult Post([FromBody] string ipOrUrl)
         {
-            var newItem = new GeolocationDetails()
-            {
-                IP = ipOrUrl,
-                City = $"city {ipOrUrl}",
-                CountryName = $"country {ipOrUrl}",
-                ZipCode = $"zip {ipOrUrl}",
-            };
-
-            db.GeolocationDetails.Add(newItem);
-            db.SaveChanges();
-
+            GeolocationDetails newItem = service.Create(ipOrUrl);
             return Created($"api/geolocation", newItem);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

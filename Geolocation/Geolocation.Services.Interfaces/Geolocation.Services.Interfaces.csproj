@@ -44,5 +44,11 @@
     <Compile Include="IGeolocationDetailsManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Geolocation.Model\Geolocation.Model.csproj">
+      <Project>{814e28f6-79d0-4d26-93a7-5b094746dcec}</Project>
+      <Name>Geolocation.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
