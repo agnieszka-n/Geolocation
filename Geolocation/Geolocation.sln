@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geolocation.Services", "Geo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geolocation.Services.Interfaces", "Geolocation.Services.Interfaces\Geolocation.Services.Interfaces.csproj", "{E51FE6AD-7580-4AC4-8E6B-C9B5D06D4882}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geolocation.Tests", "Geolocation.Tests\Geolocation.Tests.csproj", "{576ECAE9-39C7-4C94-9C71-21BD63D555D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{E51FE6AD-7580-4AC4-8E6B-C9B5D06D4882}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E51FE6AD-7580-4AC4-8E6B-C9B5D06D4882}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E51FE6AD-7580-4AC4-8E6B-C9B5D06D4882}.Release|Any CPU.Build.0 = Release|Any CPU
+		{576ECAE9-39C7-4C94-9C71-21BD63D555D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{576ECAE9-39C7-4C94-9C71-21BD63D555D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{576ECAE9-39C7-4C94-9C71-21BD63D555D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{576ECAE9-39C7-4C94-9C71-21BD63D555D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
