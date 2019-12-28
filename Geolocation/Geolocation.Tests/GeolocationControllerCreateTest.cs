@@ -13,7 +13,7 @@ using System.Web.Http.Results;
 namespace Geolocation.Tests
 {
     [TestFixture]
-    public class GeolocationControllerTest
+    public class GeolocationControllerCreateTest
     {
         [Test]
         public void Can_Create_Geolocation_Details_With_IP()

@@ -1,4 +1,5 @@
-﻿using Geolocation.Model;
+﻿using Geolocation.ControllerModels;
+using Geolocation.Model;
 using Geolocation.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,18 @@ namespace Geolocation.Services
         public GeolocationDetailsManager(GeolocationContext context)
         {
             db = context;
+        }
+
+        public GetGeolocationDetailsByIpReturnModel GetByIp(string ip)
+        {
+            var details = db.GeolocationDetails.SingleOrDefault(x => x.IP == ip);
+            return details == null ? null : new GetGeolocationDetailsByIpReturnModel(details);
+        }
+
+        public GetGeolocationDetailsByUrlReturnModel GetByUrl(string url)
+        {
+            var details = db.GeolocationDetails.SingleOrDefault(x => x.URL == url);
+            return details == null ? null : new GetGeolocationDetailsByUrlReturnModel(details);
         }
 
         public GeolocationDetails CreateWithIp(string ip)

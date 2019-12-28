@@ -12,13 +12,58 @@ namespace Geolocation.API.Controllers
     [RoutePrefix("api/geolocation")]
     public class GeolocationController : ApiController
     {
-        private readonly IGeolocationDetailsManager service;
+        private readonly IGeolocationDetailsManager detailsManager;
         private readonly ILocationValidator locationValidator;
 
-        public GeolocationController(IGeolocationDetailsManager service, ILocationValidator locationValidator)
+        public GeolocationController(IGeolocationDetailsManager detailsManager, ILocationValidator locationValidator)
         {
-            this.service = service;
+            this.detailsManager = detailsManager;
             this.locationValidator = locationValidator;
+        }
+
+        [Route(""), HttpGet]
+        public IHttpActionResult Get(string ip = null, string url = null)
+        {
+            if (ip != null && url != null)
+            {
+                return BadRequest("Only one of IP and URL should be provided.");
+            }
+
+            if (ip == null && url == null)
+            {
+                return BadRequest("Either IP or URL should be provided.");
+            }
+
+            if (ip != null)
+            {
+                if (!locationValidator.IsValidIpAddress(ip))
+                {
+                    return BadRequest("Invalid IP provided.");
+                }
+
+                var modelWithIp = detailsManager.GetByIp(ip);
+
+                if (modelWithIp == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(modelWithIp);
+            }
+
+            if (!locationValidator.IsValidUrl(url))
+            {
+                return BadRequest("Invalid URL provided.");
+            }
+
+            var modelWithUrl = detailsManager.GetByUrl(url);
+
+            if (modelWithUrl == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(modelWithUrl);
         }
 
         [Route(""), HttpPost]
@@ -33,11 +78,11 @@ namespace Geolocation.API.Controllers
 
             if (locationValidator.IsValidIpAddress(ipOrUrl))
             {
-                newItem = service.CreateWithIp(ipOrUrl);
+                newItem = detailsManager.CreateWithIp(ipOrUrl);
             }
             else if (locationValidator.IsValidUrl(ipOrUrl))
             {
-                newItem = service.CreateWithUrl(ipOrUrl);
+                newItem = detailsManager.CreateWithUrl(ipOrUrl);
             }
 
             if (newItem == null)

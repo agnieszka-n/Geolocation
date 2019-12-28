@@ -56,6 +56,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Geolocation.ControllerModels\Geolocation.ControllerModels.csproj">
+      <Project>{B514CDC5-8C08-41F1-AB38-D91BE182D716}</Project>
+      <Name>Geolocation.ControllerModels</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Geolocation.Model\Geolocation.Model.csproj">
       <Project>{814E28F6-79D0-4D26-93A7-5B094746DCEC}</Project>
       <Name>Geolocation.Model</Name>

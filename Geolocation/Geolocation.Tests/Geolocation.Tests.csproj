@@ -69,7 +69,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GeolocationControllerTest.cs" />
+    <Compile Include="GeolocationControllerGetTest.cs" />
+    <Compile Include="GeolocationControllerCreateTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -80,6 +81,10 @@
     <ProjectReference Include="..\Geolocation.API\Geolocation.API.csproj">
       <Project>{3c264d70-1b7b-4134-8e58-1bf2581ddf31}</Project>
       <Name>Geolocation.API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Geolocation.ControllerModels\Geolocation.ControllerModels.csproj">
+      <Project>{b514cdc5-8c08-41f1-ab38-d91be182d716}</Project>
+      <Name>Geolocation.ControllerModels</Name>
     </ProjectReference>
     <ProjectReference Include="..\Geolocation.Model\Geolocation.Model.csproj">
       <Project>{814e28f6-79d0-4d26-93a7-5b094746dcec}</Project>
