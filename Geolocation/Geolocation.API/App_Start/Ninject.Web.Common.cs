@@ -3,19 +3,18 @@
 
 namespace Geolocation.API.App_Start
 {
-    using System;
-    using System.Web;
-    using System.Web.Http;
-    using System.Web.Http.Dependencies;
     using Geolocation.Model;
     using Geolocation.Services;
     using Geolocation.Services.Interfaces;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-
     using Ninject;
     using Ninject.Web.Common;
     using Ninject.Web.Common.WebHost;
     using Ninject.Web.WebApi;
+    using System;
+    using System.Web;
+    using System.Web.Http;
+    using System.Web.Http.Dependencies;
 
     public static class NinjectWebCommon
     {
@@ -72,6 +71,7 @@ namespace Geolocation.API.App_Start
             kernel.Bind<ILogger>().To<Logger>().InRequestScope();
             kernel.Bind<IGeolocationDetailsManager>().To<GeolocationDetailsManager>().InRequestScope();
             kernel.Bind<ILocationValidator>().To<LocationValidator>().InRequestScope();
+            kernel.Bind<IIpStackConfiguration>().To<IpStackConfiguration>().InRequestScope();
         }
     }
 

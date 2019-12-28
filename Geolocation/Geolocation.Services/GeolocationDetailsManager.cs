@@ -13,11 +13,13 @@ namespace Geolocation.Services
     {
         private readonly GeolocationContext db;
         private readonly ILogger logger;
+        private readonly IIpStackConfiguration ipStackConfiguration;
 
-        public GeolocationDetailsManager(GeolocationContext context, ILogger logger)
+        public GeolocationDetailsManager(GeolocationContext context, ILogger logger, IIpStackConfiguration ipStackConfiguration)
         {
             db = context;
             this.logger = logger;
+            this.ipStackConfiguration = ipStackConfiguration;
         }
 
         public GetGeolocationDetailsByIpReturnModel GetByIp(string ip)
@@ -50,39 +52,40 @@ namespace Geolocation.Services
 
         public GeolocationDetails CreateWithIp(string ip)
         {
-            try
+            var newItem = new GeolocationDetails()
             {
-                var newItem = new GeolocationDetails()
-                {
-                    IP = ip,
-                    City = $"city {ip}",
-                    CountryName = $"country {ip}",
-                    ZipCode = $"zip {ip}",
-                };
+                IP = ip,
+                City = $"city {ip}",
+                CountryName = $"country {ip}",
+                ZipCode = $"zip {ip}",
+            };
 
-                db.GeolocationDetails.Add(newItem);
-                db.SaveChanges();
-
-                return newItem;
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(this, ex);
-                throw;
-            }
+            return CreateDetails(newItem);
         }
 
         public GeolocationDetails CreateWithUrl(string url)
         {
+            var newItem = new GeolocationDetails()
+            {
+                URL = url,
+                City = $"city {url}",
+                CountryName = $"country {url}",
+                ZipCode = $"zip {url}",
+            };
+
+            return CreateDetails(newItem);
+        }
+
+        private GeolocationDetails CreateDetails(GeolocationDetails newItem)
+        {
             try
             {
-                var newItem = new GeolocationDetails()
+                string accessKey = ipStackConfiguration.GetAccessKey();
+
+                if (string.IsNullOrWhiteSpace(accessKey))
                 {
-                    URL = url,
-                    City = $"city {url}",
-                    CountryName = $"country {url}",
-                    ZipCode = $"zip {url}",
-                };
+                    throw new ApplicationException("Missing IP Stack access key setting.");
+                }
 
                 db.GeolocationDetails.Add(newItem);
                 db.SaveChanges();
