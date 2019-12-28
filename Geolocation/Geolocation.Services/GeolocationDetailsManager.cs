@@ -20,51 +20,88 @@ namespace Geolocation.Services
 
         public GetGeolocationDetailsByIpReturnModel GetByIp(string ip)
         {
-            var details = db.GeolocationDetails.SingleOrDefault(x => x.IP == ip);
-            return details == null ? null : new GetGeolocationDetailsByIpReturnModel(details);
+            try
+            {
+                var details = db.GeolocationDetails.SingleOrDefault(x => x.IP == ip);
+                return details == null ? null : new GetGeolocationDetailsByIpReturnModel(details);
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                throw;
+            }
         }
 
         public GetGeolocationDetailsByUrlReturnModel GetByUrl(string url)
         {
-            var details = db.GeolocationDetails.SingleOrDefault(x => x.URL == url);
-            return details == null ? null : new GetGeolocationDetailsByUrlReturnModel(details);
+            try
+            {
+                var details = db.GeolocationDetails.SingleOrDefault(x => x.URL == url);
+                return details == null ? null : new GetGeolocationDetailsByUrlReturnModel(details);
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                throw;
+            }
         }
 
         public GeolocationDetails CreateWithIp(string ip)
         {
-            var newItem = new GeolocationDetails()
+            try
             {
-                IP = ip,
-                City = $"city {ip}",
-                CountryName = $"country {ip}",
-                ZipCode = $"zip {ip}",
-            };
+                var newItem = new GeolocationDetails()
+                {
+                    IP = ip,
+                    City = $"city {ip}",
+                    CountryName = $"country {ip}",
+                    ZipCode = $"zip {ip}",
+                };
 
-            db.GeolocationDetails.Add(newItem);
-            db.SaveChanges();
+                db.GeolocationDetails.Add(newItem);
+                db.SaveChanges();
 
-            return newItem;
+                return newItem;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                throw;
+            }
         }
 
         public GeolocationDetails CreateWithUrl(string url)
         {
-            var newItem = new GeolocationDetails()
+            try
             {
-                URL = url,
-                City = $"city {url}",
-                CountryName = $"country {url}",
-                ZipCode = $"zip {url}",
-            };
+                var newItem = new GeolocationDetails()
+                {
+                    URL = url,
+                    City = $"city {url}",
+                    CountryName = $"country {url}",
+                    ZipCode = $"zip {url}",
+                };
 
-            db.GeolocationDetails.Add(newItem);
-            db.SaveChanges();
+                db.GeolocationDetails.Add(newItem);
+                db.SaveChanges();
 
-            return newItem;
+                return newItem;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                throw;
+            }
         }
 
         public void Dispose()
         {
             db.Dispose();
+        }
+
+        private void LogError(Exception ex)
+        {
+            System.Diagnostics.Trace.WriteLine(ex);
         }
     }
 }

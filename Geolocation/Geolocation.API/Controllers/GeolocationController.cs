@@ -34,36 +34,43 @@ namespace Geolocation.API.Controllers
                 return BadRequest("Either IP or URL should be provided.");
             }
 
-            if (ip != null)
+            try
             {
-                if (!locationValidator.IsValidIpAddress(ip))
+                if (ip != null)
                 {
-                    return BadRequest("Invalid IP provided.");
+                    if (!locationValidator.IsValidIpAddress(ip))
+                    {
+                        return BadRequest("Invalid IP provided.");
+                    }
+
+                    var modelWithIp = detailsManager.GetByIp(ip);
+
+                    if (modelWithIp == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return Ok(modelWithIp);
                 }
 
-                var modelWithIp = detailsManager.GetByIp(ip);
+                if (!locationValidator.IsValidUrl(url))
+                {
+                    return BadRequest("Invalid URL provided.");
+                }
 
-                if (modelWithIp == null)
+                var modelWithUrl = detailsManager.GetByUrl(url);
+
+                if (modelWithUrl == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(modelWithIp);
+                return Ok(modelWithUrl);
             }
-
-            if (!locationValidator.IsValidUrl(url))
+            catch (Exception)
             {
-                return BadRequest("Invalid URL provided.");
+                return InternalServerError();
             }
-
-            var modelWithUrl = detailsManager.GetByUrl(url);
-
-            if (modelWithUrl == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(modelWithUrl);
         }
 
         [Route(""), HttpPost]
@@ -74,23 +81,30 @@ namespace Geolocation.API.Controllers
                 return BadRequest("IP or URL should be provided.");
             }
 
-            GeolocationDetails newItem = null;
-
-            if (locationValidator.IsValidIpAddress(ipOrUrl))
+            try
             {
-                newItem = detailsManager.CreateWithIp(ipOrUrl);
-            }
-            else if (locationValidator.IsValidUrl(ipOrUrl))
-            {
-                newItem = detailsManager.CreateWithUrl(ipOrUrl);
-            }
+                GeolocationDetails newItem = null;
 
-            if (newItem == null)
-            {
-                return BadRequest("Invalid IP or URL provided.");
-            }
+                if (locationValidator.IsValidIpAddress(ipOrUrl))
+                {
+                    newItem = detailsManager.CreateWithIp(ipOrUrl);
+                }
+                else if (locationValidator.IsValidUrl(ipOrUrl))
+                {
+                    newItem = detailsManager.CreateWithUrl(ipOrUrl);
+                }
 
-            return Created($"api/geolocation", newItem);
+                if (newItem == null)
+                {
+                    return BadRequest("Invalid IP or URL provided.");
+                }
+
+                return Created($"api/geolocation", newItem);
+            }
+            catch (Exception)
+            {
+                return InternalServerError();
+            }
         }
     }
 }
