@@ -72,6 +72,7 @@ namespace Geolocation.API.App_Start
             kernel.Bind<IGeolocationDetailsManager>().To<GeolocationDetailsManager>().InRequestScope();
             kernel.Bind<ILocationValidator>().To<LocationValidator>().InRequestScope();
             kernel.Bind<IIpStackConfiguration>().To<IpStackConfiguration>().InRequestScope();
+            kernel.Bind<IGeolocationDetailsProvider>().To<GeolocationDetailsProvider>().InRequestScope();
         }
     }
 

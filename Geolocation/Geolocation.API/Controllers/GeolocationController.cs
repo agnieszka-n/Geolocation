@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Geolocation.API.Controllers
@@ -75,7 +76,7 @@ namespace Geolocation.API.Controllers
         }
 
         [Route(""), HttpPost]
-        public IHttpActionResult Post([FromBody] string ipOrUrl)
+        public async Task<IHttpActionResult> PostAsync([FromBody] string ipOrUrl)
         {
             if (string.IsNullOrWhiteSpace(ipOrUrl))
             {
@@ -86,13 +87,12 @@ namespace Geolocation.API.Controllers
             {
                 if (locationValidator.IsValidIpAddress(ipOrUrl))
                 {
-                    CreateGeolocationDetailsWithIpReturnModel newItemWithIp = detailsManager.CreateWithIp(ipOrUrl);
+                    CreateGeolocationDetailsWithIpReturnModel newItemWithIp = await detailsManager.CreateWithIpAsync(ipOrUrl);
                     return Created($"api/geolocation/{newItemWithIp.IP}", newItemWithIp);
-
                 }
                 else if (locationValidator.IsValidUrl(ipOrUrl))
                 {
-                    CreateGeolocationDetailsWithUrlReturnModel newItemWithUrl = detailsManager.CreateWithUrl(ipOrUrl);
+                    CreateGeolocationDetailsWithUrlReturnModel newItemWithUrl = await detailsManager.CreateWithUrlAsync(ipOrUrl);
                     return Created($"api/geolocation/{newItemWithUrl.URL}", newItemWithUrl);
                 }
 

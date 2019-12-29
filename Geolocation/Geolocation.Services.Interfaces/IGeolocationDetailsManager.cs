@@ -13,8 +13,8 @@ namespace Geolocation.Services.Interfaces
         GetGeolocationDetailsByIpReturnModel GetByIp(string ip);
         GetGeolocationDetailsByUrlReturnModel GetByUrl(string url);
 
-        CreateGeolocationDetailsWithIpReturnModel CreateWithIp(string ip);
-        CreateGeolocationDetailsWithUrlReturnModel CreateWithUrl(string url);
+        Task<CreateGeolocationDetailsWithIpReturnModel> CreateWithIpAsync(string ip);
+        Task<CreateGeolocationDetailsWithUrlReturnModel> CreateWithUrlAsync(string url);
         
         void DeleteByIp(string ip);
         void DeleteByUrl(string url);

@@ -27,7 +27,7 @@ namespace Geolocation.Tests
             CreateGeolocationDetailsWithIpReturnModel sampleControllerModel = new CreateGeolocationDetailsWithIpReturnModel(sampleDetails);
             
             Mock<IGeolocationDetailsManager> mockManger = new Mock<IGeolocationDetailsManager>();
-            mockManger.Setup(x => x.CreateWithIp(It.IsAny<string>())).Returns(sampleControllerModel);
+            mockManger.Setup(x => x.CreateWithIpAsync(It.IsAny<string>())).Returns(Task.FromResult(sampleControllerModel));
 
             Mock<ILocationValidator> mockLocationValidator = new Mock<ILocationValidator>();
             mockLocationValidator.Setup(x => x.IsValidIpAddress(It.IsAny<string>())).Returns(true);
@@ -35,7 +35,7 @@ namespace Geolocation.Tests
             var controller = new GeolocationController(mockManger.Object, mockLocationValidator.Object);
 
             // Act
-            var actionResult = controller.Post("test") as CreatedNegotiatedContentResult<CreateGeolocationDetailsWithIpReturnModel>;
+            var actionResult = controller.PostAsync("test").Result as CreatedNegotiatedContentResult<CreateGeolocationDetailsWithIpReturnModel>;
 
             // Assert
             Assert.IsNotNull(actionResult);
@@ -53,7 +53,7 @@ namespace Geolocation.Tests
             CreateGeolocationDetailsWithUrlReturnModel sampleControllerModel = new CreateGeolocationDetailsWithUrlReturnModel(sampleDetails);
 
             Mock<IGeolocationDetailsManager> mockManger = new Mock<IGeolocationDetailsManager>();
-            mockManger.Setup(x => x.CreateWithUrl(It.IsAny<string>())).Returns(sampleControllerModel);
+            mockManger.Setup(x => x.CreateWithUrlAsync(It.IsAny<string>())).Returns(Task.FromResult(sampleControllerModel));
 
             Mock<ILocationValidator> mockLocationValidator = new Mock<ILocationValidator>();
             mockLocationValidator.Setup(x => x.IsValidUrl(It.IsAny<string>())).Returns(true);
@@ -61,7 +61,7 @@ namespace Geolocation.Tests
             var controller = new GeolocationController(mockManger.Object, mockLocationValidator.Object);
 
             // Act
-            var actionResult = controller.Post("test") as CreatedNegotiatedContentResult<CreateGeolocationDetailsWithUrlReturnModel>;
+            var actionResult = controller.PostAsync("test").Result as CreatedNegotiatedContentResult<CreateGeolocationDetailsWithUrlReturnModel>;
 
             // Assert
             Assert.IsNotNull(actionResult);
@@ -80,7 +80,7 @@ namespace Geolocation.Tests
             var controller = new GeolocationController(mockManger.Object, mockLocationValidator.Object);
 
             // Act
-            var actionResult = controller.Post("test") as BadRequestErrorMessageResult;
+            var actionResult = controller.PostAsync("test").Result as BadRequestErrorMessageResult;
 
             // Assert
             Assert.IsNotNull(actionResult);
@@ -99,7 +99,7 @@ namespace Geolocation.Tests
             var controller = new GeolocationController(mockManger.Object, mockLocationValidator.Object);
 
             // Act
-            var actionResult = controller.Post(ipOrUrl) as BadRequestErrorMessageResult;
+            var actionResult = controller.PostAsync(ipOrUrl).Result as BadRequestErrorMessageResult;
 
             // Assert
             Assert.IsNotNull(actionResult);

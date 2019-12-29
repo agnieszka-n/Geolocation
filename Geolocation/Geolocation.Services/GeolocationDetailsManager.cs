@@ -14,12 +14,14 @@ namespace Geolocation.Services
         private readonly GeolocationContext db;
         private readonly ILogger logger;
         private readonly IIpStackConfiguration ipStackConfiguration;
+        private readonly IGeolocationDetailsProvider geolocationDetailsProvider;
 
-        public GeolocationDetailsManager(GeolocationContext context, ILogger logger, IIpStackConfiguration ipStackConfiguration)
+        public GeolocationDetailsManager(GeolocationContext context, ILogger logger, IIpStackConfiguration ipStackConfiguration, IGeolocationDetailsProvider geolocationDetailsProvider)
         {
             db = context;
             this.logger = logger;
             this.ipStackConfiguration = ipStackConfiguration;
+            this.geolocationDetailsProvider = geolocationDetailsProvider;
         }
 
         public GetGeolocationDetailsByIpReturnModel GetByIp(string ip)
@@ -50,7 +52,7 @@ namespace Geolocation.Services
             }
         }
 
-        public CreateGeolocationDetailsWithIpReturnModel CreateWithIp(string ip)
+        public async Task<CreateGeolocationDetailsWithIpReturnModel> CreateWithIpAsync(string ip)
         {
             var existingDetails = db.GeolocationDetails.SingleOrDefault(x => x.IP == ip);
 
@@ -61,17 +63,14 @@ namespace Geolocation.Services
 
             var newItem = new GeolocationDetails()
             {
-                IP = ip,
-                City = $"city {ip}",
-                CountryName = $"country {ip}",
-                ZipCode = $"zip {ip}",
+                IP = ip
             };
 
-            GeolocationDetails model = CreateDetails(newItem);
+            GeolocationDetails model = await CreateDetailsAsync(ip, newItem);
             return new CreateGeolocationDetailsWithIpReturnModel(model);
         }
 
-        public CreateGeolocationDetailsWithUrlReturnModel CreateWithUrl(string url)
+        public async Task<CreateGeolocationDetailsWithUrlReturnModel> CreateWithUrlAsync(string url)
         {
             var existingDetails = db.GeolocationDetails.SingleOrDefault(x => x.URL == url);
 
@@ -82,17 +81,14 @@ namespace Geolocation.Services
 
             var newItem = new GeolocationDetails()
             {
-                URL = url,
-                City = $"city {url}",
-                CountryName = $"country {url}",
-                ZipCode = $"zip {url}",
+                URL = url
             };
 
-            GeolocationDetails model = CreateDetails(newItem);
+            GeolocationDetails model = await CreateDetailsAsync(url, newItem);
             return new CreateGeolocationDetailsWithUrlReturnModel(model);
         }
 
-        private GeolocationDetails CreateDetails(GeolocationDetails newItem)
+        private async Task<GeolocationDetails> CreateDetailsAsync(string ipOrUrl, GeolocationDetails newItem)
         {
             try
             {
@@ -103,6 +99,17 @@ namespace Geolocation.Services
                     throw new ApplicationException("Missing IP Stack access key setting.");
                 }
 
+                Interfaces.Data.GeolocationDetails details = await geolocationDetailsProvider.GetAsync(accessKey, ipOrUrl);
+
+                if (details.Success == false)
+                {
+                    HandleUnsuccessfulDetailsRequest(details);
+                }
+
+                newItem.City = details.City;
+                newItem.CountryName = details.CountryName;
+                newItem.ZipCode = details.ZipCode;
+
                 db.GeolocationDetails.Add(newItem);
                 db.SaveChanges();
 
@@ -112,6 +119,18 @@ namespace Geolocation.Services
             {
                 logger.LogError(this, ex);
                 throw;
+            }
+        }
+
+        private void HandleUnsuccessfulDetailsRequest(Interfaces.Data.GeolocationDetails details)
+        {
+            if (details.Error.Type == "invalid_access_key")
+            {
+                throw new Exception("Invalid access key.");
+            }
+            else
+            {
+                throw new Exception(details.Error.Info);
             }
         }
 
