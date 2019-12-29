@@ -41,7 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractCreateGeolocationDetailsReturnModel.cs" />
     <Compile Include="AbstractGetGeolocationDetailsReturnModel.cs" />
+    <Compile Include="CreateGeolocationDetailsWithUrlReturnModel.cs" />
+    <Compile Include="CreateGeolocationDetailsWithIpReturnModel.cs" />
     <Compile Include="GetGeolocationDetailsByIpReturnModel.cs" />
     <Compile Include="GetGeolocationDetailsByUrlReturnModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

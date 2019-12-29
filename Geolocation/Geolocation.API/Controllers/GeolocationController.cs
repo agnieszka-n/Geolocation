@@ -1,4 +1,5 @@
-﻿using Geolocation.Model;
+﻿using Geolocation.ControllerModels;
+using Geolocation.Model;
 using Geolocation.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -83,23 +84,19 @@ namespace Geolocation.API.Controllers
 
             try
             {
-                GeolocationDetails newItem = null;
-
                 if (locationValidator.IsValidIpAddress(ipOrUrl))
                 {
-                    newItem = detailsManager.CreateWithIp(ipOrUrl);
+                    CreateGeolocationDetailsWithIpReturnModel newItemWithIp = detailsManager.CreateWithIp(ipOrUrl);
+                    return Created($"api/geolocation/{newItemWithIp.IP}", newItemWithIp);
+
                 }
                 else if (locationValidator.IsValidUrl(ipOrUrl))
                 {
-                    newItem = detailsManager.CreateWithUrl(ipOrUrl);
+                    CreateGeolocationDetailsWithUrlReturnModel newItemWithUrl = detailsManager.CreateWithUrl(ipOrUrl);
+                    return Created($"api/geolocation/{newItemWithUrl.URL}", newItemWithUrl);
                 }
 
-                if (newItem == null)
-                {
-                    return BadRequest("Invalid IP or URL provided.");
-                }
-
-                return Created($"api/geolocation", newItem);
+                return BadRequest("Invalid IP or URL provided.");
             }
             catch (Exception)
             {

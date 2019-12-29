@@ -13,7 +13,7 @@ namespace Geolocation.Services.Interfaces
         GetGeolocationDetailsByIpReturnModel GetByIp(string ip);
         GetGeolocationDetailsByUrlReturnModel GetByUrl(string url);
 
-        GeolocationDetails CreateWithIp(string ip);
-        GeolocationDetails CreateWithUrl(string url);
+        CreateGeolocationDetailsWithIpReturnModel CreateWithIp(string ip);
+        CreateGeolocationDetailsWithUrlReturnModel CreateWithUrl(string url);
     }
 }

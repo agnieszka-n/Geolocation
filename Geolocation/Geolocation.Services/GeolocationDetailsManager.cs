@@ -50,7 +50,7 @@ namespace Geolocation.Services
             }
         }
 
-        public GeolocationDetails CreateWithIp(string ip)
+        public CreateGeolocationDetailsWithIpReturnModel CreateWithIp(string ip)
         {
             var newItem = new GeolocationDetails()
             {
@@ -60,10 +60,11 @@ namespace Geolocation.Services
                 ZipCode = $"zip {ip}",
             };
 
-            return CreateDetails(newItem);
+            GeolocationDetails model = CreateDetails(newItem);
+            return new CreateGeolocationDetailsWithIpReturnModel(model);
         }
 
-        public GeolocationDetails CreateWithUrl(string url)
+        public CreateGeolocationDetailsWithUrlReturnModel CreateWithUrl(string url)
         {
             var newItem = new GeolocationDetails()
             {
@@ -73,7 +74,8 @@ namespace Geolocation.Services
                 ZipCode = $"zip {url}",
             };
 
-            return CreateDetails(newItem);
+            GeolocationDetails model = CreateDetails(newItem);
+            return new CreateGeolocationDetailsWithUrlReturnModel(model);
         }
 
         private GeolocationDetails CreateDetails(GeolocationDetails newItem)
