@@ -145,7 +145,7 @@ namespace Geolocation.Tests
         }
 
         [Test]
-        public void Can_Get_Geolocation_Details_When_Both_IP_URL_Provided()
+        public void Can_Return_BadRequest_When_Both_IP_URL_Provided()
         {
             // Arrange
             Mock<IGeolocationDetailsManager> mockManager = new Mock<IGeolocationDetailsManager>();
