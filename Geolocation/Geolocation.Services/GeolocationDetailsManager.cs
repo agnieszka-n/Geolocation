@@ -52,6 +52,13 @@ namespace Geolocation.Services
 
         public CreateGeolocationDetailsWithIpReturnModel CreateWithIp(string ip)
         {
+            var existingDetails = db.GeolocationDetails.SingleOrDefault(x => x.IP == ip);
+
+            if (existingDetails != null)
+            {
+                return new CreateGeolocationDetailsWithIpReturnModel(existingDetails);
+            }
+
             var newItem = new GeolocationDetails()
             {
                 IP = ip,
@@ -66,6 +73,13 @@ namespace Geolocation.Services
 
         public CreateGeolocationDetailsWithUrlReturnModel CreateWithUrl(string url)
         {
+            var existingDetails = db.GeolocationDetails.SingleOrDefault(x => x.URL == url);
+
+            if (existingDetails != null)
+            {
+                return new CreateGeolocationDetailsWithUrlReturnModel(existingDetails);
+            }
+
             var newItem = new GeolocationDetails()
             {
                 URL = url,
