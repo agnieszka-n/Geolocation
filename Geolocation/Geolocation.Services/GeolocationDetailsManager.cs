@@ -101,6 +101,44 @@ namespace Geolocation.Services
             }
         }
 
+        public void DeleteByIp(string ip)
+        {
+            try
+            {
+                var itemToDelete = db.GeolocationDetails.SingleOrDefault(x => x.IP == ip);
+
+                if (itemToDelete != null)
+                {
+                    db.GeolocationDetails.Remove(itemToDelete);
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(this, ex);
+                throw;
+            }
+        }
+
+        public void DeleteByUrl(string url)
+        {
+            try
+            {
+                var itemToDelete = db.GeolocationDetails.SingleOrDefault(x => x.URL == url);
+
+                if (itemToDelete != null)
+                {
+                    db.GeolocationDetails.Remove(itemToDelete);
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(this, ex);
+                throw;
+            }
+        }
+
         public void Dispose()
         {
             db.Dispose();

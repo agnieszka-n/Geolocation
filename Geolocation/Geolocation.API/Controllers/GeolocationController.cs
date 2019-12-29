@@ -103,5 +103,34 @@ namespace Geolocation.API.Controllers
                 return InternalServerError();
             }
         }
+
+        [Route(""), HttpDelete]
+        public IHttpActionResult Delete([FromBody] string ipOrUrl)
+        {
+            if (string.IsNullOrWhiteSpace(ipOrUrl))
+            {
+                return BadRequest("IP or URL should be provided.");
+            }
+
+            try
+            {
+                if (locationValidator.IsValidIpAddress(ipOrUrl))
+                {
+                    detailsManager.DeleteByIp(ipOrUrl);
+                    return StatusCode(HttpStatusCode.NoContent);
+                }
+                else if (locationValidator.IsValidUrl(ipOrUrl))
+                {
+                    detailsManager.DeleteByUrl(ipOrUrl);
+                    return StatusCode(HttpStatusCode.NoContent);
+                }
+
+                return BadRequest("Invalid IP or URL provided.");
+            }
+            catch (Exception)
+            {
+                return InternalServerError();
+            }
+        }
     }
 }

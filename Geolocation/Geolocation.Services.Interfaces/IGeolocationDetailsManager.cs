@@ -15,5 +15,8 @@ namespace Geolocation.Services.Interfaces
 
         CreateGeolocationDetailsWithIpReturnModel CreateWithIp(string ip);
         CreateGeolocationDetailsWithUrlReturnModel CreateWithUrl(string url);
+        
+        void DeleteByIp(string ip);
+        void DeleteByUrl(string url);
     }
 }

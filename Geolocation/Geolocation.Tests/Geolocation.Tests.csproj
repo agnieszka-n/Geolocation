@@ -69,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GeolocationControllerDeleteTest.cs" />
     <Compile Include="GeolocationControllerGetTest.cs" />
     <Compile Include="GeolocationControllerCreateTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
